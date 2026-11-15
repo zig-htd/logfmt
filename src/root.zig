@@ -21,6 +21,8 @@ pub const WriteOptions = struct {
     timezone_offset: i32 = 0,
     /// 隐藏 scope 字段
     hide_scope: bool = false,
+    /// 隐藏时间
+    hide_time: bool = false,
     /// 没有颜色
     no_color: ?bool = null,
 };
@@ -62,11 +64,11 @@ fn Instance(
                     if (options.no_color == false) t = .{ .writer = w, .mode = .escape_codes };
                 },
             }
-            if (self.timestamp) |ts| {
+            if (!options.hide_time) if (self.timestamp) |ts| {
                 const time = Time.fromNanoTimestamp(ts.nanoseconds).setLoc(.create(options.timezone_offset, ""));
                 try time.fmt(options.time_fmt).format(w); // 写入格式化的时间
                 try w.writeAll(" "); // 时间后追加空格
-            }
+            };
             if (options.no_color != true) if (t) |term| {
                 term.setColor(Self.LEVEL_C) catch {};
                 term.setColor(.bold) catch {};

@@ -17,10 +17,11 @@ pub fn main(init: std.process.Init) !void {
     formatted.timestamp = std.Io.Timestamp.now(io, .real);
     try formatted.write(.{ .terminal = stderr }, options);
 
-    // -- 调整选项：隐藏 scope、禁用颜色 --
+    // -- 调整选项：隐藏 scope、禁用颜色、隐藏时间 --
     var new_options = options;
     new_options.hide_scope = true;
     new_options.no_color = true; // 禁用颜色
+    new_options.hide_time = true; // 隐藏时间
     try formatted.write(.{ .terminal = stderr }, new_options);
 
     // -- 写入到内存 --
@@ -30,6 +31,7 @@ pub fn main(init: std.process.Init) !void {
     var mem_hello = logfmt.format(.debug, .mem, "Hello memory: {}", .{n});
     mem_hello.timestamp = std.Io.Timestamp.now(io, .real);
     new_options.no_color = false; // 注意：非终端需主动启用颜色
+    new_options.hide_time = false; // 显示时间
     try mem_hello.write(.{ .raw = &aw.writer }, new_options);
     try stderr.writer.writeAll(aw.written());
 }

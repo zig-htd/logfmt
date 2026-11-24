@@ -1,5 +1,5 @@
 const std = @import("std");
-const logfmt = @import("zig_logfmt");
+const logfmt = @import("logfmt");
 
 pub fn main(init: std.process.Init) !void {
     const io = init.io;

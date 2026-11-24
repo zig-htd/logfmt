@@ -5,7 +5,7 @@ pub fn build(b: *std.Build) void {
 
     const zig_time = b.dependency("zig_time", .{});
 
-    const mod = b.addModule("zig_logfmt", .{
+    const mod = b.addModule("logfmt", .{
         .root_source_file = b.path("src/root.zig"),
         .target = target,
     });
@@ -18,7 +18,7 @@ pub fn build(b: *std.Build) void {
             .root_source_file = b.path("examples/basic.zig"),
             .target = target,
             .imports = &.{
-                .{ .name = "zig_logfmt", .module = mod },
+                .{ .name = "logfmt", .module = mod },
             },
         }),
     });
